@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hurr Durr Dog</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .dog-container {
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            text-align: center;
+        }
+        .dog {
+            width: 500px;
+        }
+        .hurrdurr {
+            position: absolute;
+            font-family: "Comic Sans MS", cursive;
+            font-size: 70px;
+            color: #ffd000;
+            top: 10px;
+            left: 10px;
+        }
+        .hurr {
+            position: absolute;
+            font-family: "Comic Sans MS", cursive;
+            font-size: 57px;
+            color: #0800ff;
+            top: 50%;
+            left: 20%;
+            transform: translate(-50%, -50%);
+        }
+        .durr {
+            position: absolute;
+            font-family: "Comic Sans MS", cursive;
+            font-size: 57px;
+            color: #ff0000;
+            top: 50%;
+            right: 20%;
+            transform: translate(50%, -50%);
+        }
+        /* Add a new class for random position */
+        .random-position {
+            position: absolute;
+            font-family: "Comic Sans MS", cursive;
+            font-size: 77px;
+            color: #ffd000;
+            /* Initial position (you can adjust this) */
+            top: 10px;
+            left: 10px;
+        }
+        #contract-text {
+            position: absolute;
+            top: 0;
+            right: 20;
+            font-family: "Comic Sans MS", cursive;
+            font-size: 100px;
+            color: black; /* Set the desired text color */
+    /* Add any other styling you need (e.g., font family, background, etc.) */
+}
+    </style>
+</head>
+<body>
+    <div class="dog-container">
+        <img src="hurrdurrdog.gif" alt="Hurr Durr Dog" class="dog">
+    </div>
+    <div class="hurrdurr random-position" id="random-text">$HURRDURR</div>
+    <div class="hurr" id="text-toggle">HURR?</div>
+    <div class="random-position" id="random-image-container">
+        <img src=""  id="random-image">
+    </div>
+    <div id="contract-text">CONTRACT</div>
+
+    <script>
+
+let elapsedTime = 0; // Initialize elapsed time in seconds
+
+        // Function to generate random position
+        function getRandomPosition() {
+            const maxWidth = window.innerWidth - 200; // Adjust as needed
+            const maxHeight = window.innerHeight - 200; // Adjust as needed
+            const randomLeft = Math.floor(Math.random() * (maxWidth - 200));
+            const randomTop = Math.floor(Math.random() * (maxHeight - 200));
+            return { left: randomLeft + 'px', top: randomTop + 'px' };
+        }
+
+        // Update position of the "$HURRDURR" text
+        function updateRandomPosition() {
+            const randomPosition = getRandomPosition();
+            const randomText = document.getElementById('random-text');
+            randomText.style.left = randomPosition.left;
+            randomText.style.top = randomPosition.top;
+        }
+
+        // Toggle "HURR?" and "DURR!1" text
+        const hurrDurrText = document.getElementById('text-toggle');
+        let isHurr = true; // Initial state
+
+        function toggleText() {
+            if (isHurr) {
+                hurrDurrText.innerHTML = 'DURR<span style="font-size: 1.777em;">!1</span>';
+                hurrDurrText.style.color = '#0800ff'; // Blue color for DURR!1
+                hurrDurrText.style.left = '77%';
+                hurrDurrText.style.top = '57%';
+            } else {
+                hurrDurrText.innerHTML = 'HURR<span style="font-size: 1.777em;">?</span>';
+                hurrDurrText.style.color = '#ff0000'; // Red color for HURR?
+                hurrDurrText.style.left = '57%';
+                hurrDurrText.style.top = '77%';
+            }
+            isHurr = !isHurr; // Toggle the state
+        }
+
+        // Call the function initially
+        toggleText();
+
+        // Toggle text every second
+        setInterval(toggleText, 1000);
+
+        // Call the function to update position initially
+        updateRandomPosition();
+
+        
+
+        // Update position every second
+        setInterval(updateRandomPosition, 1000);
+
+        const imageUrls = [
+        'WINDOWSXPBUY.png',
+        'WINDOWSXPDONTSELL.png',
+        'WINDOWSXPTOTHEMOON.png'
+        // Add more image URLs as needed
+    ];
+
+        // Modify your getRandomImage function
+        async function getRandomImage() {
+            const randomIndex = Math.floor(Math.random() * imageUrls.length);
+            const randomImageUrl = imageUrls[randomIndex];
+
+            // Create an Audio object for the sound
+            const audio = new Audio('WINDOWSXPSOUND.mp3');
+            audio.currentTime = 0; // Reset audio to start
+            audio.play(); // Play the sound
+
+            // Create the image element
+            const randomImageElement = document.createElement('img');
+            randomImageElement.src = randomImageUrl;
+            randomImageElement.style.maxWidth = '377px'; // Set the desired maximum width
+            randomImageElement.style.maxHeight = '377px'; // Set the desired maximum height
+
+            // Set random position for the image
+            const randomPosition = getRandomPosition();
+            randomImageElement.style.position = 'absolute';
+            randomImageElement.style.left = randomPosition.left;
+            randomImageElement.style.top = randomPosition.top;
+
+            document.getElementById('random-image-container').appendChild(randomImageElement);
+
+            return randomImageUrl;
+        }
+
+        // Add a new random image every 5 seconds (starting after 10 seconds)
+        const initialInterval = 3000;
+let imageInterval = setInterval(async () => {
+    const randomImageUrl = await getRandomImage();
+}, initialInterval);
+
+// Check elapsed time and adjust interval after 1 minute (60 seconds)
+setInterval(() => {
+    elapsedTime += initialInterval / 1000; // Increment elapsed time by the interval in seconds
+    if (elapsedTime >= 10) {
+        clearInterval(imageInterval); // Clear the existing interval
+        imageInterval = setInterval(async () => {
+            const randomImageUrl = await getRandomImage();
+        }, 577); // Set new interval to 1 second
+    }
+    if (elapsedTime >= 30) {
+        clearInterval(imageInterval); // Clear the existing interval
+        imageInterval = setInterval(async () => {
+            const randomImageUrl = await getRandomImage();
+        }, 300); // Set new interval to 1 second
+    }
+
+    if (elapsedTime >= 60) {
+        clearInterval(imageInterval); // Clear the existing interval
+        imageInterval = setInterval(async () => {
+            const randomImageUrl = await getRandomImage();
+        }, 170); // Set new interval to 1 second
+    }
+}, initialInterval);
+    </script>
+
+    <audio autoplay loop>
+        <source src="hurrdurrdog.mp3" type="audio/mpeg">
+        <!-- Replace with your own background music -->
+    </audio>
+
+    <audio id="windowsXpSound" preload="auto">
+        <source src="WINDOWSXPSOUND.mp3" type="audio/mpeg">
+        <!-- Add other audio formats if needed -->
+    </audio>
+</body>
+</html>
